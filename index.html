@@ -1,0 +1,502 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Poum! Lab — Onboarding Offre 1</title>
+  <style>
+    :root { --max: 980px; --b:#111; --g:#666; --bg:#fafafa; --card:#fff; --line:#e6e6e6; }
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin:0; color:var(--b); background:var(--bg); }
+    header { background:#fff; border-bottom:1px solid var(--line); }
+    .wrap { max-width: var(--max); margin: 0 auto; padding: 20px; }
+    h1 { margin: 8px 0 0; font-size: 22px; }
+    .sub { color:var(--g); margin: 6px 0 0; }
+    .bar { display:flex; gap:10px; flex-wrap:wrap; margin-top: 14px; }
+    button { border:1px solid var(--line); background:#fff; padding:10px 12px; border-radius:10px; cursor:pointer; }
+    button.primary { background:#111; color:#fff; border-color:#111; }
+    button.danger { background:#fff; border-color:#ffdddd; color:#a00; }
+    .pill { border:1px solid var(--line); border-radius:999px; padding:6px 10px; background:#fff; color:var(--g); }
+    .grid { display:grid; grid-template-columns: 1fr; gap:14px; margin-top: 18px; }
+    .card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px; }
+    .card h2 { margin:0 0 12px; font-size:16px; }
+    .row { display:grid; grid-template-columns: 1fr; gap:10px; }
+    @media (min-width: 780px) { .row.two { grid-template-columns: 1fr 1fr; } .row.three { grid-template-columns: 1fr 1fr 1fr; } }
+    label { font-size: 12px; color:var(--g); display:block; margin-bottom: 6px; }
+    input, textarea, select { width:100%; box-sizing:border-box; border:1px solid var(--line); border-radius:10px; padding:10px; background:#fff; }
+    textarea { min-height: 88px; resize: vertical; }
+    .req::after { content:" *"; color:#b00; }
+    .hint { color:var(--g); font-size: 12px; margin-top: 6px; }
+    .hr { height:1px; background:var(--line); margin: 12px 0; }
+    .status { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+    .status select { width:auto; }
+    .small { font-size:12px; color:var(--g); }
+    .ok { color:#0a0; }
+    .bad { color:#b00; }
+  </style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;">
+      <div>
+        <h1>Poum! Lab — Onboarding Offre 1</h1>
+        <p class="sub">Objectif : poser les bonnes bases avant de prototyper. Remplissez ce formulaire puis exportez le JSON et envoyez-le à Poum! Lab.</p>
+      </div>
+      <div class="pill" id="completeness">Complétude : 0%</div>
+    </div>
+
+    <div class="bar">
+      <button class="primary" onclick="exportJSON()">Exporter JSON</button>
+      <button onclick="exportCSV()">Exporter CSV</button>
+      <button onclick="window.print()">Imprimer / PDF</button>
+      <button class="danger" onclick="resetAll()">Réinitialiser</button>
+      <span class="pill">Sauvegarde auto</span>
+    </div>
+    <p class="small">Champs marqués * : requis. Les données restent dans votre navigateur tant que vous n’exportez pas.</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="grid">
+
+    <!-- 0. Identité -->
+    <section class="card">
+      <h2>0) Identité & contact</h2>
+      <div class="row two">
+        <div>
+          <label class="req" for="company">Entreprise</label>
+          <input id="company" data-req="1" placeholder="Nom de la cidrerie / entreprise" />
+        </div>
+        <div>
+          <label class="req" for="contact_name">Contact principal</label>
+          <input id="contact_name" data-req="1" placeholder="Prénom Nom" />
+        </div>
+      </div>
+      <div class="row two">
+        <div>
+          <label class="req" for="contact_role">Rôle</label>
+          <input id="contact_role" data-req="1" placeholder="DG, production, commercial..." />
+        </div>
+        <div>
+          <label class="req" for="contact_email">Email</label>
+          <input id="contact_email" data-req="1" type="email" placeholder="email@domaine.fr" />
+        </div>
+      </div>
+      <div class="row three">
+        <div>
+          <label for="phone">Téléphone</label>
+          <input id="phone" placeholder="+33..." />
+        </div>
+        <div>
+          <label class="req" for="decider">Décideur GO/NO GO</label>
+          <input id="decider" data-req="1" placeholder="Nom + fonction" />
+        </div>
+        <div>
+          <label for="timezone">Fuseau</label>
+          <select id="timezone">
+            <option value="Europe/Paris">Europe/Paris</option>
+            <option value="UTC">UTC</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <!-- 1. Besoin -->
+    <section class="card">
+      <h2>1) Besoin & contexte</h2>
+      <div class="row two">
+        <div>
+          <label class="req" for="goal_primary">Objectif principal (choisir 1)</label>
+          <select id="goal_primary" data-req="1">
+            <option value="">—</option>
+            <option>Nouveau cidre</option>
+            <option>Boisson sans alcool</option>
+            <option>Faible alcool</option>
+            <option>Boisson fermentée “twist”</option>
+            <option>Autre</option>
+          </select>
+        </div>
+        <div>
+          <label for="goal_other">Si “Autre”, préciser</label>
+          <input id="goal_other" placeholder="..." />
+        </div>
+      </div>
+
+      <div class="row two">
+        <div>
+          <label class="req" for="success_criterion_1">Critère n°1 de réussite (choisir 1)</label>
+          <select id="success_criterion_1" data-req="1">
+            <option value="">—</option>
+            <option>Goût / plaisir</option>
+            <option>Différenciation / caractère</option>
+            <option>Faisabilité outil</option>
+            <option>Coût de revient</option>
+            <option>Rapidité de lancement</option>
+            <option>Image / premiumisation</option>
+          </select>
+        </div>
+        <div>
+          <label class="req" for="deadline_test">Date souhaitée pour un test marché</label>
+          <input id="deadline_test" data-req="1" type="date" />
+        </div>
+      </div>
+
+      <div class="row two">
+        <div>
+          <label class="req" for="channel_primary">Canal prioritaire (choisir 1)</label>
+          <select id="channel_primary" data-req="1">
+            <option value="">—</option>
+            <option>CHR (cafés/hôtels/restaurants)</option>
+            <option>Direct (domaine / web / événements)</option>
+            <option>Cavistes / épiceries fines</option>
+            <option>Grande distribution</option>
+            <option>Export</option>
+          </select>
+        </div>
+        <div>
+          <label for="price_target_consumer">Prix cible consommateur (si connu)</label>
+          <input id="price_target_consumer" placeholder="ex : 3,90€ TTC / 75 cl" />
+        </div>
+      </div>
+
+      <div class="row two">
+        <div>
+          <label class="req" for="format_target">Format envisagé</label>
+          <select id="format_target" data-req="1">
+            <option value="">—</option>
+            <option>Bouteille</option>
+            <option>Canette</option>
+            <option>Fût</option>
+            <option>Vrac</option>
+            <option>Indécis</option>
+          </select>
+        </div>
+        <div>
+          <label for="constraints_values">Ingrédients interdits / valeurs</label>
+          <input id="constraints_values" placeholder="ex : pas d’arômes, pas d’édulcorants, bio..." />
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <label for="brief_free">Brief libre (1 paragraphe)</label>
+          <textarea id="brief_free" placeholder="Décrivez ce que vous imaginez, le problème à résoudre, et ce que vous ne voulez surtout pas."></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Contraintes produit -->
+    <section class="card">
+      <h2>2) Contraintes produit (premier cadrage)</h2>
+      <div class="row three">
+        <div>
+          <label class="req" for="alcohol">Avec alcool ?</label>
+          <select id="alcohol" data-req="1">
+            <option value="">—</option>
+            <option>Oui</option>
+            <option>Non</option>
+            <option>Indifférent</option>
+          </select>
+        </div>
+        <div>
+          <label for="abv_target">Degré visé (si alcool)</label>
+          <input id="abv_target" placeholder="ex : 4,5% vol" />
+        </div>
+        <div>
+          <label class="req" for="carbonation">Pétillant ?</label>
+          <select id="carbonation" data-req="1">
+            <option value="">—</option>
+            <option>Oui</option>
+            <option>Non</option>
+            <option>Indifférent</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row three">
+        <div>
+          <label class="req" for="sweetness">Profil sucre</label>
+          <select id="sweetness" data-req="1">
+            <option value="">—</option>
+            <option>Sec</option>
+            <option>Demi-sec</option>
+            <option>Peu sucré</option>
+            <option>Indifférent</option>
+          </select>
+        </div>
+        <div>
+          <label for="acidity_style">Acidité / sensation</label>
+          <input id="acidity_style" placeholder="ex : vif, rond, salivant..." />
+        </div>
+        <div>
+          <label for="style_refs">Références (marques/produits)</label>
+          <input id="style_refs" placeholder="2–3 références" />
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Outil & process -->
+    <section class="card">
+      <h2>3) Outil, process & hygiène (faisabilité)</h2>
+      <div class="row three">
+        <div>
+          <label class="req" for="tank_volumes">Cuves disponibles (volumes)</label>
+          <input id="tank_volumes" data-req="1" placeholder="ex : 2x1000L + 1x500L" />
+        </div>
+        <div>
+          <label class="req" for="temp_control">Contrôle température ?</label>
+          <select id="temp_control" data-req="1">
+            <option value="">—</option>
+            <option>Oui</option>
+            <option>Non</option>
+            <option>Partiel</option>
+          </select>
+        </div>
+        <div>
+          <label for="temp_range">Plage température (si oui)</label>
+          <input id="temp_range" placeholder="ex : 10–18°C" />
+        </div>
+      </div>
+
+      <div class="row three">
+        <div>
+          <label for="filtration">Filtration</label>
+          <select id="filtration">
+            <option value="">—</option>
+            <option>Aucune</option>
+            <option>Plaques</option>
+            <option>Tangentielle</option>
+            <option>Autre</option>
+          </select>
+        </div>
+        <div>
+          <label for="packaging_line">Conditionnement</label>
+          <input id="packaging_line" placeholder="bouteille / canette / fût + modèle/prestataire" />
+        </div>
+        <div>
+          <label for="cold_storage">Froid (chambre froide)</label>
+          <input id="cold_storage" placeholder="oui/non + capacité" />
+        </div>
+      </div>
+
+      <div class="row two">
+        <div>
+          <label class="req" for="cleaning_procedure">Procédure de nettoyage (résumé)</label>
+          <textarea id="cleaning_procedure" data-req="1" placeholder="Produits, fréquence, étapes..."></textarea>
+        </div>
+        <div>
+          <label for="incidents">Derniers incidents (voiles, refermentation, contamination)</label>
+          <textarea id="incidents" placeholder="Décrivez brièvement si applicable."></textarea>
+        </div>
+      </div>
+
+      <div class="hr"></div>
+      <div class="row">
+        <div>
+          <label class="req" for="media_pack">Médias requis (liens)</label>
+          <textarea id="media_pack" data-req="1" placeholder="Collez ici des liens Drive/Dropbox vers : 6 photos (cuves, tuyaux/pompes, filtration, conditionnement, chambre froide, zone lavage) + 2 vidéos courtes (conditionnement + nettoyage)."></textarea>
+          <div class="hint">Sans ces éléments, l’audit outil ne peut pas être fiable.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Matières & coûts -->
+    <section class="card">
+      <h2>4) Matières premières & économie (directionnel)</h2>
+      <div class="row two">
+        <div>
+          <label class="req" for="apple_source">Origine des pommes / jus</label>
+          <input id="apple_source" data-req="1" placeholder="verger, fournisseur, type de jus..." />
+        </div>
+        <div>
+          <label for="juice_stock">Stock disponible (si pertinent)</label>
+          <input id="juice_stock" placeholder="volume + conditions stockage" />
+        </div>
+      </div>
+
+      <div class="row two">
+        <div>
+          <label for="pack_costs">Coûts emballage (si connus)</label>
+          <textarea id="pack_costs" placeholder="bouteille, capsule, étiquette, carton..."></textarea>
+        </div>
+        <div>
+          <label for="cogs_target">Coût de revient cible (même approximatif)</label>
+          <input id="cogs_target" placeholder="ex : 1,10€ HT / 33cl" />
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Définition du succès (client) -->
+    <section class="card">
+      <h2>5) Définition du succès (client)</h2>
+      <p class="small">Notez de 0 à 10 (0 = pas important / 10 = essentiel).</p>
+      <div class="row three">
+        <div>
+          <label class="req" for="score_taste">Goût / plaisir (0–10)</label>
+          <input id="score_taste" data-req="1" type="number" min="0" max="10" />
+        </div>
+        <div>
+          <label class="req" for="score_feasibility">Faisabilité outil (0–10)</label>
+          <input id="score_feasibility" data-req="1" type="number" min="0" max="10" />
+        </div>
+        <div>
+          <label class="req" for="score_speed">Rapidité (0–10)</label>
+          <input id="score_speed" data-req="1" type="number" min="0" max="10" />
+        </div>
+      </div>
+      <div class="row two">
+        <div>
+          <label class="req" for="score_margin">Économie / marge (0–10)</label>
+          <input id="score_margin" data-req="1" type="number" min="0" max="10" />
+        </div>
+        <div>
+          <label class="req" for="score_brand">Image / premium (0–10)</label>
+          <input id="score_brand" data-req="1" type="number" min="0" max="10" />
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <label class="req" for="non_negotiables">Non négociables (liste courte)</label>
+          <textarea id="non_negotiables" data-req="1" placeholder="ex : 100% pomme locale, pas d’arômes, sec, CHR, etc."></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. GO/NO GO (à remplir par Poum! Lab) -->
+    <section class="card">
+      <h2>6) Décision Poum! Lab (à remplir après kick-off)</h2>
+      <div class="status">
+        <label for="go_status" class="req">Statut</label>
+        <select id="go_status" data-req="1">
+          <option value="">—</option>
+          <option>GO</option>
+          <option>GO sous conditions</option>
+          <option>NO GO</option>
+        </select>
+        <span class="small">Objectif : pouvoir s’arrêter proprement si nécessaire.</span>
+      </div>
+      <div class="row two" style="margin-top:10px;">
+        <div>
+          <label for="conditions">Conditions (si GO sous conditions)</label>
+          <textarea id="conditions" placeholder="ex : prestataire conditionnement, nettoyage renforcé, achat d’un débitmètre CO₂, etc."></textarea>
+        </div>
+        <div>
+          <label for="risks">Risques majeurs identifiés</label>
+          <textarea id="risks" placeholder="ex : hygiène, oxygène, refermentation, capacité froid..."></textarea>
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <label for="recommendation">Recommandation produit #1 (résumé)</label>
+          <textarea id="recommendation" placeholder="Produit #1 recommandé + rationnel (marché, faisabilité, économie)."></textarea>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<script>
+  const KEY = "poumlab_offre1_onboarding_v1";
+
+  function allFields() {
+    return Array.from(document.querySelectorAll("input, textarea, select"));
+  }
+
+  function getData() {
+    const data = {};
+    allFields().forEach(el => {
+      data[el.id] = el.value ?? "";
+    });
+    data["_meta"] = {
+      exported_at: new Date().toISOString(),
+      version: "v1",
+      completeness_percent: computeCompleteness()
+    };
+    return data;
+  }
+
+  function setData(data) {
+    if (!data) return;
+    allFields().forEach(el => {
+      if (data.hasOwnProperty(el.id)) el.value = data[el.id];
+    });
+  }
+
+  function save() {
+    localStorage.setItem(KEY, JSON.stringify(getData()));
+    updateCompletenessUI();
+  }
+
+  function load() {
+    try {
+      const raw = localStorage.getItem(KEY);
+      if (!raw) return;
+      setData(JSON.parse(raw));
+      updateCompletenessUI();
+    } catch (e) {}
+  }
+
+  function resetAll() {
+    if (!confirm("Réinitialiser toutes les réponses ?")) return;
+    localStorage.removeItem(KEY);
+    allFields().forEach(el => el.value = "");
+    updateCompletenessUI();
+  }
+
+  function requiredFields() {
+    return Array.from(document.querySelectorAll("[data-req='1']"));
+  }
+
+  function computeCompleteness() {
+    const req = requiredFields();
+    const filled = req.filter(el => (el.value ?? "").toString().trim().length > 0).length;
+    return Math.round((filled / req.length) * 100);
+  }
+
+  function updateCompletenessUI() {
+    const pct = computeCompleteness();
+    const el = document.getElementById("completeness");
+    el.textContent = `Complétude : ${pct}%`;
+    el.style.color = pct >= 90 ? "#0a0" : (pct >= 60 ? "#666" : "#b00");
+  }
+
+  function download(filename, text, mime) {
+    const blob = new Blob([text], { type: mime });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url; a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  }
+
+  function exportJSON() {
+    const data = getData();
+    download(`poumlab_offre1_${safeName(data.company)}.json`, JSON.stringify(data, null, 2), "application/json");
+  }
+
+  function exportCSV() {
+    const data = getData();
+    const keys = Object.keys(data).filter(k => k !== "_meta");
+    const esc = (v) => `"${String(v ?? "").replaceAll('"', '""')}"`;
+    let csv = "field,value\n";
+    keys.forEach(k => csv += `${esc(k)},${esc(data[k])}\n`);
+    csv += `${esc("_meta.exported_at")},${esc(data._meta.exported_at)}\n`;
+    csv += `${esc("_meta.version")},${esc(data._meta.version)}\n`;
+    csv += `${esc("_meta.completeness_percent")},${esc(data._meta.completeness_percent)}\n`;
+    download(`poumlab_offre1_${safeName(data.company)}.csv`, csv, "text/csv");
+  }
+
+  function safeName(s) {
+    return (s || "client").toLowerCase().replace(/[^a-z0-9]+/gi, "_").replace(/^_+|_+$/g, "");
+  }
+
+  // autosave
+  window.addEventListener("input", () => save());
+  window.addEventListener("change", () => save());
+  load();
+</script>
+</body>
+</html>
